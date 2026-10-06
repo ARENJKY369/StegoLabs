@@ -1,0 +1,29 @@
+# StegLab — two containers, zero cloud dependencies.
+# Frontend proxies /api/* to the backend over the internal network,
+# so the browser only ever talks to port 3000.
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        GIT_COMMIT: ${GIT_COMMIT:-unknown}
+    container_name: steglab-backend
+    environment:
+      - GIT_COMMIT=${GIT_COMMIT:-unknown}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://localhost:8080/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    container_name: steglab-frontend
+    environment:
+      - BACKEND_URL=http://backend:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
