@@ -62,7 +62,7 @@ public final class PdfCleaner {
                 var js = names.getJavaScript();
                 if (js != null && js.getNames() != null && !js.getNames().isEmpty()) {
                     int count = js.getNames().size();
-                    names.setJavaScript(null);
+                    names.getCOSObject().removeItem(COSName.JAVA_SCRIPT);
                     items.add(new CleanItem("Active content",
                             "Document-level JavaScript actions removed", count));
                 }

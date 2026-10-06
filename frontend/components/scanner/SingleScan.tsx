@@ -14,6 +14,7 @@ import PasswordField from "@/components/ui/PasswordField";
 import Tooltip from "@/components/ui/Tooltip";
 import { ApiError, postForm } from "@/lib/api";
 import { formatBytes } from "@/lib/format";
+import { downloadScanPdf } from "@/lib/report";
 import {
   TESTS,
   labelBadgeClass,
@@ -260,18 +261,13 @@ export default function SingleScan({
           >
             Export JSON
           </button>
-          <Tooltip
-            what="A signed PDF report with every finding, suitable for audits."
-            when="Arrives with the report module."
-            accent="danger"
+          <button
+            onClick={() => report && downloadScanPdf(report)}
+            disabled={!report}
+            className="h-9 flex-1 rounded-md border border-line px-3 text-cap font-medium text-ink-dim transition-colors duration-150 enabled:hover:border-line-bright enabled:hover:text-ink disabled:opacity-40"
           >
-            <button
-              disabled
-              className="h-9 flex-1 cursor-not-allowed rounded-md border border-line px-3 text-cap font-medium text-ink-faint opacity-50"
-            >
-              Export PDF
-            </button>
-          </Tooltip>
+            Export PDF
+          </button>
         </div>
       </section>
 

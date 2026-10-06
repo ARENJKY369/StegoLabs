@@ -73,6 +73,11 @@ public final class ImageCleaner {
             items.add(new CleanItem("Container",
                     "Non-pixel data removed by full re-encode (trailing bytes, ancillary chunks)", diff));
         }
+        if (deep && out.length > before) {
+            notes.add("The cleaned file is larger than the original: the randomised LSB plane "
+                    + "defeats lossless compression. That is expected — and it is also why "
+                    + "a suspiciously hard-to-compress LSB plane is itself a stego signal.");
+        }
 
         return new Result(out, items, notes);
     }

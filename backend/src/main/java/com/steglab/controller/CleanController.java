@@ -34,7 +34,9 @@ public class CleanController {
 
         String meta;
         try {
-            meta = mapper.writeValueAsString(result.report());
+            // Response headers are ISO-8859-1 — strip anything fancier so
+            // Tomcat never silently drops the meta header.
+            meta = mapper.writeValueAsString(result.report()).replaceAll("[^ -~]", "");
         } catch (JsonProcessingException e) {
             meta = "{}";
         }
